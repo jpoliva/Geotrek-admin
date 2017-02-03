@@ -1,6 +1,6 @@
 **Geotrek**, *paths* management for *National Parks* and *Tourism organizations*.
 
-.. image:: http://geotrek.fr/images/logo-128.png
+.. image:: http://geotrek.fr/assets/img/logo.svg
 
 :master: |master-status| |master-coverage|
 :develop: |develop-status|
@@ -28,13 +28,14 @@ In brief
 * Track maintenance of equipments and infrastructures
 * Control objets by district, protected areas, physical and legal status of paths
 * Compute 3D attributes using DEM draping
-* Publish a public website (e.g. `PNE <http://rando.ecrins-parcnational.fr>`_, `PNM-PNAM <http://rando.mercantour.eu>`_)
+* Publish a public website with `Geotrek-rando <https://github.com/GeotrekCE/Geotrek-rando>`_ (e.g. `PNE <http://rando.ecrins-parcnational.fr>`_, `PNM-PNAM <http://rando.mercantour.eu>`_)
+* Publish a public mobile application with `Geotrek-mobile <https://github.com/GeotrekCE/Geotrek-mobile>`_ (e.g. `PNE <https://play.google.com/store/apps/details?id=com.makinacorpus.randoecrins>`_, `PNM-PNAM <https://itunes.apple.com/app/rando-marittime-mercantour/id1032288665?mt=8>`_)
 
-.. image:: http://geotrek.fr/images/capture-3.jpg
+.. image:: http://geotrek.fr/assets/img/screen-1.png
 
-.. image:: http://geotrek.fr/images/geotrek_rando.png
+.. image:: http://geotrek.fr/assets/img/screen-2.png
 
-.. image:: http://geotrek.fr/images/capture-webgl.jpg
+.. image:: http://geotrek.fr/assets/img/mobile-screenshot.png
 
 More information on product website http://geotrek.fr
 
@@ -49,7 +50,7 @@ License
 -------
 
 * OpenSource - BSD
-* Copyright (c) 2012-2015 - Makina Corpus
+* Copyright (c) 2012-2017 - Makina Corpus / Parc national des Ecrins - Parc National du Mercantour - Parco delle Alpi Marittime
 
 .. image:: http://depot.makina-corpus.org/public/logo.gif
     :target: http://www.makina-corpus.com
@@ -58,15 +59,15 @@ License
 
 ----------
 
-.. image:: http://geotrek.fr/images/parc_ecrins_big.png
+.. image:: http://geotrek.fr/assets/img/parc_ecrins.png
     :target: http://www.ecrins-parcnational.fr
 
 
-.. image:: http://geotrek.fr/images/parc_mercantour_big.png
+.. image:: http://geotrek.fr/assets/img/parc_mercantour.png
     :target: http://www.mercantour.eu
 
 
-.. image:: http://geotrek.fr/images/alpi_maritime_big.png
+.. image:: http://geotrek.fr/assets/img/alpi_maritime.png
     :target: http://www.parcoalpimarittime.it
 
 

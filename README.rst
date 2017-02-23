@@ -3,22 +3,16 @@
 .. image:: http://geotrek.fr/assets/img/logo.svg
 
 :master: |master-status| |master-coverage|
-:develop: |develop-status|
 
 .. |master-status| image::
-    https://api.travis-ci.org/makinacorpus/Geotrek.png?branch=master
+    https://api.travis-ci.org/GeotrekCE/Geotrek-admin.png?branch=master
     :alt: Build Status
-    :target: https://travis-ci.org/makinacorpus/Geotrek
+    :target: https://travis-ci.org/GeotrekCE/Geotrek-admin
 
 .. |master-coverage| image::
-    https://coveralls.io/repos/makinacorpus/Geotrek/badge.png?branch=master
+    https://coveralls.io/repos/github/GeotrekCE/Geotrek-admin/badge.svg
     :alt: Coverage
-    :target: https://coveralls.io/r/makinacorpus/Geotrek
-
-.. |develop-status| image::
-    https://api.travis-ci.org/makinacorpus/Geotrek.png?branch=develop
-    :alt: Build Status
-    :target: https://travis-ci.org/makinacorpus/Geotrek
+    :target: https://coveralls.io/github/GeotrekCE/Geotrek-admin
 
 
 In brief
@@ -97,8 +91,8 @@ Status of sub-projects
 .. |Leaflet.GeometryUtil| image:: https://travis-ci.org/makinacorpus/Leaflet.GeometryUtil.png?branch=master
     :target: https://travis-ci.org/makinacorpus/Leaflet.GeometryUtil?branch=master
 
-.. |Leaflet.FileLayer| image:: https://travis-ci.org/makinacorpus/Leaflet.FileLayer.png?branch=gh-pages
-    :target: https://travis-ci.org/makinacorpus/Leaflet.FileLayer?branch=gh-pages
+.. |Leaflet.FileLayer| image:: https://travis-ci.org/makinacorpus/Leaflet.FileLayer.png?branch=master
+    :target: https://travis-ci.org/makinacorpus/Leaflet.FileLayer?branch=master
 
 .. |Leaflet.AlmostOver| image:: https://travis-ci.org/makinacorpus/Leaflet.GeometryUtil.png?branch=master
     :target: https://travis-ci.org/makinacorpus/Leaflet.AlmostOver?branch=master

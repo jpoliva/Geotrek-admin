@@ -91,6 +91,8 @@ after_failure:
   - cat var/log/nginx-access.log
   - cat var/log/nginx-error.log
   - cat var/log/supervisord.log
+  - casperjs --version
+  - phantomjs --version
 
 notifications:
   irc: "irc.freenode.org#geotrek"

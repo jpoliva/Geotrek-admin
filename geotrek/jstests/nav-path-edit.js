@@ -1,6 +1,7 @@
 var utils = require('./_nav-utils.js');
 
 casper.test.begin('Edit an exist path', function(test) {
+    utils.setUp();
 
     casper.start(utils.baseurl + '/path/edit/1900/', function () {
         casper.waitForSelector('a.leaflet-draw-draw-polyline');

@@ -201,29 +201,14 @@ function check_postgres_connection {
 function minimum_system_dependencies {
     sudo apt-get update -qq
     echo_progress
-    sudo apt-get install -y -qq python unzip wget python-software-properties
-    echo_progress
-    if [ $precise -eq 1 ]; then
-        sudo apt-add-repository -y ppa:git-core/ppa
-        sudo apt-add-repository -y ppa:ubuntugis/ppa
-        sudo apt-get update -qq
-        echo_progress
-    fi
-
-    sudo apt-get install -y -qq git gettext python-virtualenv build-essential python-dev
+    sudo apt-get install -y -qq python python-dev build-essential unzip wget python-software-properties git gettext python-virtualenv
     echo_progress
 }
 
 
 function geotrek_system_dependencies {
-    sudo apt-get install -y -q --no-upgrade libjson0 gdal-bin libgdal-dev
-    
-    if [ $xenial -eq 1 ]; then
-        sudo apt-get install libgeos-c1v5 libproj9
-    else
-        sudo apt-get install libgeos-c1 libproj0
-    fi
-    
+    # Geodjango Requirements
+    sudo apt-get install -y -q --no-upgrade gdal-bin libgdal-dev binutils libproj-dev
     echo_progress
     # PostgreSQL client and headers
     sudo apt-get install -y -q --no-upgrade postgresql-client-$psql_version postgresql-server-dev-$psql_version
@@ -231,7 +216,7 @@ function geotrek_system_dependencies {
     sudo apt-get install -y -qq libxml2-dev libxslt-dev  # pygal lxml
     echo_progress
     # Necessary for MapEntity Weasyprint
-    sudo apt-get install -y -qq python-dev python-lxml libcairo2 libpango1.0-0 libgdk-pixbuf2.0-dev libffi-dev shared-mime-info
+    sudo apt-get install -y -qq python-lxml libcairo2 libpango1.0-0 libgdk-pixbuf2.0-dev libffi-dev shared-mime-info
     echo_progress
     # Redis for async imports and tasks management
     sudo apt-get install -y -qq redis-server
@@ -249,7 +234,7 @@ function geotrek_system_dependencies {
 function convertit_system_dependencies {
     if $standalone ; then
         echo_step "Conversion server dependencies..."
-        sudo apt-get install -y -qq libreoffice unoconv inkscape
+        sudo apt-get install -y -qq unoconv inkscape
         echo_progress
     fi
 }
@@ -429,9 +414,8 @@ function geotrek_setup {
     fi
 
     echo_step "Configure Unicode and French locales..."
-    #sudo apt-get update > /dev/null
-    echo_progress
     sudo apt-get install -y -qq language-pack-en-base language-pack-fr-base
+    echo_progress
     sudo locale-gen fr_FR.UTF-8
     echo_progress
 
@@ -549,8 +533,7 @@ function geotrek_setup {
             sudo cp etc/supervisor-geotrek.conf /etc/supervisor/conf.d/
             sudo cp etc/supervisor-geotrek-api.conf /etc/supervisor/conf.d/
             sudo cp etc/supervisor-geotrek-celery.conf /etc/supervisor/conf.d/
-            sudo cp etc/supervisor-tilecache.conf /etc/supervisor/conf.d/
-            
+
             if $standalone ; then
                 sudo cp etc/supervisor-convertit.conf /etc/supervisor/conf.d/
                 sudo cp etc/supervisor-screamshotter.conf /etc/supervisor/conf.d/
@@ -575,10 +558,7 @@ trusty=$(grep "Ubuntu 14.04" /etc/issue | wc -l)
 vivid=$(grep "Ubuntu 15.04" /etc/issue | wc -l)
 xenial=$(grep "Ubuntu 16.04" /etc/issue | wc -l)
 
-if [ $precise -eq 1 ]; then
-    psql_version=9.1
-    pgis_version=2.0
-elif [ $trusty -eq 1 ]; then
+if [ $trusty -eq 1 ]; then
     psql_version=9.3
     pgis_version=2.1
 elif [ $vivid -eq 1 ]; then
@@ -589,8 +569,10 @@ elif [ $xenial -eq 1 ]; then
     pgis_version=2.2
 fi
 
-if [ $precise -eq 1 -o $trusty -eq 1 -o $vivid -eq 1 -o $xenial -eq 1 ] ; then
+if [ $trusty -eq 1 -o $vivid -eq 1 -o $xenial -eq 1 ] ; then
     geotrek_setup
+elif [ $precise -eq 1 ] ; then
+    exit_error 5 "Precise support was dropped."
 else
     exit_error 5 "Unsupported operating system. Aborted."
 fi

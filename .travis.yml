@@ -26,13 +26,7 @@ before_install:
   - echo -e "[buildout]\ndownload-cache=$HOME/.buildout/downloads" > $HOME/.buildout/default.cfg
   - "wget http://prod-geotrek-fr.makina-corpus.net/media/upload/geotrek-bundle.tar.gz -O /tmp/geotrek-bundle.tar.gz || true"
   - "tar -zxf /tmp/geotrek-bundle.tar.gz --directory=$HOME || true"
-
-  # GDAL-fix -- packaging is miserable, no way to obtain libgdal-dev for libgdal1 when libgdal1h available
   - sudo apt-get update -qq
-  - sudo apt-get download -y libgdal-dev
-  - sudo dpkg-deb -x libgdal-dev*.deb /
-  - sudo ln -sf /usr/lib/libgdal.so.1 /usr/lib/libgdal.so
-  - sudo ldconfig
 
   # remove travis unwanted packages
   - sudo apt-get remove postgis*
@@ -44,20 +38,10 @@ before_install:
   # upgrade
   - sudo apt-get upgrade -y
 
-  # instal trusty postgres / postgis standard version
+  # install trusty postgres / postgis standard version
   - sudo apt-get install postgresql-9.3 postgresql-9.3-postgis-2.1
 
-  # GDAL-fix -- Do not install postgis locally, trick test on host
   - make etc/settings.ini
-  - sed -i "s/localhost/127.0.0.1/" etc/settings.ini
-  - psql -c "CREATE DATABASE geotrekdb ENCODING 'UTF8' TEMPLATE template0;" -U postgres
-  - psql -c 'CREATE EXTENSION postgis;' -U postgres -d geotrekdb
-  - psql -c "CREATE USER geotrek WITH PASSWORD 'geotrek';" -U postgres
-  # django tests require to be superuser to create test db with postgis extension
-  - if [[ $ACTION == test ]]; then psql -c "ALTER USER geotrek SUPERUSER;" -U postgres; fi
-  - psql -c 'GRANT ALL PRIVILEGES ON DATABASE geotrekdb TO geotrek;' -U postgres
-  - psql -c 'GRANT ALL ON spatial_ref_sys,geometry_columns,raster_columns TO geotrek;' -U postgres -d geotrekdb
-  # GDAL-fix -- End (remove with Ubuntu 14.04)
 
   # Enable experimental features during navigation tests
   - sed -i "s/experimental = False/experimental = True/" etc/settings.ini
@@ -91,8 +75,6 @@ after_failure:
   - cat var/log/nginx-access.log
   - cat var/log/nginx-error.log
   - cat var/log/supervisord.log
-  - casperjs --version
-  - phantomjs --version
 
 notifications:
   irc: "irc.freenode.org#geotrek"

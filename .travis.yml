@@ -42,7 +42,10 @@ before_install:
   - sudo rm -rf /usr/local/phantomjs*
 
   # upgrade
-  - sudo apt-get update -qq
+  - sudo apt-get upgrade -y
+
+  # instal trusty postgres / postgis standard version
+  - sudo apt-get install postgresql-9.3 postgresql-9.3-postgis-2.1
 
   # GDAL-fix -- Do not install postgis locally, trick test on host
   - make etc/settings.ini

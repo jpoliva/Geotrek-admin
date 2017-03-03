@@ -22,8 +22,8 @@ sudo: required
 before_install:
   - sudo apt-get update -qq
   # remove travis unwanted packages
-  - sudo apt-get remove --purge postgis*
-  - sudo apt-get remove --purge postgresql*
+  - sudo apt-get remove postgis*
+  - sudo apt-get remove postgresql*
   - sudo rm -rf /usr/local/bin/phantomjs*
   - sudo rm -rf /usr/bin/phantomjs*
   - sudo rm -rf /usr/local/phantomjs*
@@ -35,6 +35,17 @@ before_install:
   - sudo apt-get install postgresql-9.3 postgresql-9.3-postgis-2.1
 
   - make etc/settings.ini
+  - sed -i "s/localhost/127.0.0.1/" etc/settings.ini
+  # GDAL-fix -- Use Travis PostGIS, initialize DB
+  - sudo sed -i "s/^client_min_messages.*$/client_min_messages = log/" /etc/postgresql/*/main/postgresql.conf
+  - sudo /etc/init.d/postgresql restart
+  - psql -c "CREATE DATABASE geotrekdb ENCODING 'UTF8' TEMPLATE template0;" -U postgres
+  - psql -c 'CREATE EXTENSION postgis;' -U postgres -d geotrekdb
+  - psql -c "CREATE USER geotrek WITH PASSWORD 'geotrek';" -U postgres
+  # django tests require to be superuser to create test db with postgis extension
+  - if [[ $ACTION == test ]]; then psql -c "ALTER USER geotrek SUPERUSER;" -U postgres; fi
+  - psql -c 'GRANT ALL PRIVILEGES ON DATABASE geotrekdb TO geotrek;' -U postgres
+  - psql -c 'GRANT ALL ON spatial_ref_sys,geometry_columns,raster_columns TO geotrek;' -U postgres -d geotrekdb
 
   # Enable experimental features during navigation tests
   - sed -i "s/experimental = False/experimental = True/" etc/settings.ini

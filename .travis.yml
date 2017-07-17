@@ -24,6 +24,8 @@ before_install:
   # remove travis unwanted packages
   - sudo apt-get remove postgis*
   - sudo apt-get remove postgresql*
+  - sudo apt-get remove phantomjs oracle-java9-installer oracle-java9-set-default oracle-java9-unlimited-jce-policy chromium-browser chromium-codecs-ffmpeg-extra
+  - sudo apt-get autoremove
   - sudo rm -rf /usr/local/bin/phantomjs*
   - sudo rm -rf /usr/bin/phantomjs*
   - sudo rm -rf /usr/local/phantomjs*

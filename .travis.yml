@@ -29,6 +29,9 @@ before_install:
   - sudo rm -rf /usr/local/bin/phantomjs*
   - sudo rm -rf /usr/bin/phantomjs*
   - sudo rm -rf /usr/local/phantomjs*
+  - sudo rm -rf /usr/local/bin/casperjs*
+  - sudo rm -rf /usr/bin/casperjs*
+  - sudo rm -rf /usr/local/casperjs*
 
   # upgrade
   - sudo apt-get upgrade -y
@@ -81,6 +84,8 @@ after_failure:
   - cat var/log/nginx-access.log
   - cat var/log/nginx-error.log
   - cat var/log/supervisord.log
+  - which casperjs
+  - which phantomjs
 
 notifications:
   irc: "irc.freenode.org#geotrek"

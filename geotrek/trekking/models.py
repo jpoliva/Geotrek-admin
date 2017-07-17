@@ -291,17 +291,17 @@ class Trek(StructureRelated, PicturesMixin, PublishableMixin, MapEntityMixin, To
         children = self.trek_children.order_by('order')\
                                      .values_list('child__id',
                                                   flat=True)
-        return list(children)
+        return children
 
     def previous_id_for(self, parent):
-        children_id = parent.children_id
+        children_id = list(parent.children_id)
         index = children_id.index(self.id)
         if index == 0:
             return None
         return children_id[index - 1]
 
     def next_id_for(self, parent):
-        children_id = parent.children_id
+        children_id = list(parent.children_id)
         index = children_id.index(self.id)
         if index == len(children_id) - 1:
             return None
@@ -379,6 +379,10 @@ class Trek(StructureRelated, PicturesMixin, PublishableMixin, MapEntityMixin, To
     def source_display(self):
         return ','.join([unicode(source) for source in self.source.all()])
 
+    @property
+    def extent(self):
+        return self.geom.transform(settings.API_SRID, clone=True).extent if self.geom.extent else None
+
 
 Path.add_property('treks', Trek.path_treks, _(u"Treks"))
 Topology.add_property('treks', Trek.topology_treks, _(u"Treks"))
@@ -442,7 +446,6 @@ class TrekRelationship(models.Model):
 
 
 class TrekNetwork(PictogramMixin):
-
     network = models.CharField(verbose_name=_(u"Name"), max_length=128, db_column='reseau')
 
     class Meta:
@@ -663,6 +666,10 @@ class POI(StructureRelated, PicturesMixin, PublishableMixin, MapEntityMixin, Top
 
     def distance(self, to_cls):
         return settings.TOURISM_INTERSECTION_MARGIN
+
+    @property
+    def extent(self):
+        return self.geom.transform(settings.API_SRID, clone=True).extent if self.geom else None
 
 
 Path.add_property('pois', POI.path_pois, _(u"POIs"))

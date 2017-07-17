@@ -161,9 +161,7 @@ class POIJSONDetailTest(TrekkingManagerTest):
         self.assertEqual(self.result['min_elevation'], 0.0)
 
     def test_cities(self):
-        self.assertDictEqual(self.result['cities'][0],
-                             {u"code": self.city.code,
-                              u"name": self.city.name})
+        self.assertEqual(self.result['cities'], [])
 
     def test_districts(self):
         self.assertDictEqual(self.result['districts'][0],
@@ -633,12 +631,12 @@ class TrekJSONDetailTest(TrekkingManagerTest):
 
     def test_parking_location_in_wgs84(self):
         parking_location = self.result['parking_location']
-        self.assertEqual(parking_location[0], -1.3630812101179008)
+        self.assertAlmostEqual(parking_location[0], -1.3630812101179008)
 
     def test_points_reference_are_exported_in_wgs84(self):
         geojson = self.result['points_reference']
         self.assertEqual(geojson['type'], 'MultiPoint')
-        self.assertEqual(geojson['coordinates'][0][0], -1.363081210117901)
+        self.assertAlmostEqual(geojson['coordinates'][0][0], -1.363081210117901)
 
     def test_touristic_contents(self):
         self.assertEqual(len(self.result['touristic_contents']), 1)
@@ -762,13 +760,13 @@ class TrekGPXTest(TrekkingManagerTest):
         self.assertEqual(self.response.status_code, 200)
         self.assertEqual(self.response['Content-Type'], 'application/gpx+xml')
 
-    def test_gpx_trek_as_route_points(self):
-        self.assertEqual(len(self.parsed.findAll('rte')), 1)
-        self.assertEqual(len(self.parsed.findAll('rtept')), 2)
+    def test_gpx_trek_as_track_points(self):
+        self.assertEqual(len(self.parsed.findAll('trk')), 1)
+        self.assertEqual(len(self.parsed.findAll('trkpt')), 2)
 
     def test_gpx_translated_using_another_language(self):
-        route = self.parsed.findAll('rte')[0]
-        description = route.find('desc').string
+        track = self.parsed.findAll('trk')[0]
+        description = track.find('desc').string
         self.assertTrue(description.startswith(self.trek.description_it))
 
     def test_gpx_contains_pois(self):
@@ -1026,7 +1024,7 @@ class CirkwiTests(TranslationResetMixin, TestCase):
         self.assertXMLEqual(
             response.content,
             '<?xml version="1.0" encoding="utf8"?>\n'
-            '<circuits version="2">'
+            '<circuits version="3">'
             '<circuit id_circuit="{pk}" date_modification="{date_update}" date_creation="1388534400">'
             '<informations>'
             '<information langue="en">'
@@ -1041,12 +1039,11 @@ class CirkwiTests(TranslationResetMixin, TestCase):
             '<information_complementaire><titre>Advised parking</titre><description>Advised parking {n}</description></information_complementaire>'
             '<information_complementaire><titre>Public transport</titre><description>Public transport {n}</description></information_complementaire>'
             '<information_complementaire><titre>Advice</titre><description>Advice {n}</description></information_complementaire></informations_complementaires>'
-            '<tags_publics></tags_publics>'
             '</information>'
             '</informations>'
             '<distance>141</distance>'
             '<locomotions><locomotion duree="5400"></locomotion></locomotions>'
-            '<trace><point><lat>46.5</lat><lng>3.0</lng></point><point><lat>46.5009004423</lat><lng>3.00130397672</lng></point></trace>'
+            '<fichier_trace>http://testserver/api/en/treks/{pk}/name-{n}.kml</fichier_trace>'
             '<pois>'
             '<poi id_poi="{poi_pk}" date_modification="{poi_date_update}" date_creation="1388534400">'
             '<informations>'
@@ -1070,7 +1067,7 @@ class CirkwiTests(TranslationResetMixin, TestCase):
         self.assertXMLEqual(
             response.content,
             '<?xml version="1.0" encoding="utf8"?>\n'
-            '<pois version="2">'
+            '<pois version="3">'
             '<poi id_poi="{pk}" date_modification="{date_update}" date_creation="1388534400">'
             '<informations>'
             '<information langue="en"><titre>{title}</titre><description>{description}</description></information>'

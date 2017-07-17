@@ -46,7 +46,6 @@ DATABASES = {
 #
 DATABASE_SCHEMAS = {
     'default': 'geotrek',
-
     'gis': 'public',
     'auth': 'django',
     'django': 'django',
@@ -241,12 +240,12 @@ else:
 # https://code.djangoproject.com/ticket/12288
 #
 PROJECT_APPS += (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
+    'geotrek.appconfig.AuthGeotrekConfig',  # django.contrib.app
+    'geotrek.appconfig.ContenttypeGeotrekConfig',  # django.contrib.contenttypes
+    'geotrek.appconfig.SessionsGeotrekConfig',  # django.contrib.sessions
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
+    'geotrek.appconfig.AdminGeotrekConfig',   # django.contrib.admin
     'django.contrib.admindocs',
     'django.contrib.gis',
 )
@@ -257,16 +256,18 @@ PROJECT_APPS += (
     'crispy_forms',
     'compressor',
     'djgeojson',
+    'django_filters',
     'tinymce',
-    'easy_thumbnails',
+    'geotrek.appconfig.EasyThumbnailsGeotrekConfig',  # easy_thumbnails
     'shapes',
     'paperclip',
     'mapentity',
     'leaflet',  # After mapentity to allow it to patch settings
     'rest_framework',
     'rest_framework_gis',
+    'rest_framework_swagger',
     'embed_video',
-    'djcelery',
+    'geotrek.appconfig.CeleryGeotrekConfig',  # djcelery
 )
 
 
@@ -377,6 +378,7 @@ THUMBNAIL_ALIASES = {
 
 
 PAPERCLIP_ENABLE_VIDEO = True
+PAPERCLIP_ENABLE_LINK = True
 PAPERCLIP_FILETYPE_MODEL = 'common.FileType'
 PAPERCLIP_ATTACHMENT_MODEL = 'common.Attachment'
 
@@ -564,7 +566,10 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = ('bootstrap', 'bootstrap3')
 CRISPY_TEMPLATE_PACK = 'bootstrap'
 
 # Mobile app_directories
-MOBILE_TILES_URL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+MOBILE_TILES_URL = [
+    'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+]
+MOBILE_TILES_EXTENSION = None  # auto
 MOBILE_TILES_RADIUS_LARGE = 0.01  # ~1 km
 MOBILE_TILES_RADIUS_SMALL = 0.005  # ~500 m
 MOBILE_TILES_GLOBAL_ZOOMS = range(13)
@@ -594,3 +599,9 @@ If true; displays the attached pois pictures in the Trek's geojson pictures prop
 In Geotrek Rando it enables correlated pictures to be displayed in the slideshow.
 '''
 TREK_WITH_POIS_PICTURES = False
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'APIS_SORTER': 'alpha',
+    'JSON_EDITOR': True
+}

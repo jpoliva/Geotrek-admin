@@ -37,7 +37,7 @@ License
 -------
 
 * OpenSource - BSD
-* Copyright (c) 2012-2015 - Makina Corpus
+* Copyright (c) 2012-2017 - Makina Corpus
 
 .. image:: http://depot.makina-corpus.org/public/logo.gif
     :target: http://www.makina-corpus.com
